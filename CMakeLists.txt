@@ -7,16 +7,22 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 find_package(Ceres REQUIRED)
 find_package(Eigen3 3.3 REQUIRED NO_MODULE)
 
-add_library(eris SHARED src/solver.cpp)
+add_subdirectory(third_party/pybind11)
 
-target_include_directories(eris
-                           PRIVATE 
-target_link_libraries(eris PRIVATE)
+add_library(_eris MODULE src/solver.cpp src/wrapper.cpp)
 
-target_include_directories(samson PUBLIC
+target_include_directories(_eris PRIVATE
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-  $<BUILD_INTERFACE:${CERES_INCLUDE_DIRS})
+  $<BUILD_INTERFACE:${CERES_INCLUDE_DIRS}>
   $<INSTALL_INTERFACE:include>  
 )
 
-target_link_libraries(eris PUBLIC Eigen3::Eigen)
+target_link_libraries(_eris PRIVATE ${CERES_LIBRARIES} Eigen3::Eigen pybind11::module)
+
+set_target_properties(_eris
+    PROPERTIES	
+        PREFIX "${PYTHON_MODULE_PREFIX}"	
+        SUFFIX "${PYTHON_MODULE_EXTENSION}"	
+)
+
+install(TARGETS _eris LIBRARY DESTINATION modules/_eris)

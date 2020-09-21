@@ -29,7 +29,7 @@ def main():
         packages=["eris", "_eris"],
         package_dir={"": "modules"},
         cmake_args=[
-            "-DCMAKE_BUILD_TYPE=Debug",
+            "-DCMAKE_BUILD_TYPE=Release",
             "-DCMAKE_INSTALL_RPATH=$ORIGIN",
             "-DCMAKE_BUILD_WITH_INSTALL_RPATH:BOOL=ON",
             "-DCMAKE_INSTALL_RPATH_USE_LINK_PATH:BOOL=OFF",
