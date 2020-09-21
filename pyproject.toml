@@ -1,0 +1,8 @@
+[build-system]
+requires = [
+    "cmake",
+    "conan",
+    "ninja",
+    "scikit-build",
+    "numpy",
+    ]
