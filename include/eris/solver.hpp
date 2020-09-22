@@ -79,6 +79,8 @@ public:
 
   auto Summary() -> ceres::Solver::Summary;
 
+  auto Options() -> ceres::Solver::Options;
+
 private:
   ceres::Problem problem_;
   ceres::Solver::Options options_;

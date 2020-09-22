@@ -18,27 +18,10 @@ campoints = [
 ]
 
 problem = eris.Problem(campoints, robposes)
-
-
 solver = eris.Solver()
 
-sol, summary = solver.solve(problem)
+sol, summary = solver.calibrate_eye_to_hand(problem)
 
 print(sol)
 
-a = np.loadtxt("/workspaces/eris/datasets/example_1/2019-10-21_20-50-11.txt")
-# a[:3,3] *= 0.001
-
-print(a)
-
-def inv(A):
-    R = A[:3, :3]
-    t = A[:3, [3]]
-    Ainv = np.eye(4)
-    Ainv[:3, :3] = R.T
-    Ainv[:3, [3]] = -R.T @ t
-    return Ainv
-
-print(sol @ inv(a))
-
-print(summary['full_report'])
+print(summary["full_report"])

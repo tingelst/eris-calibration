@@ -16,30 +16,26 @@ import numpy as np
 import _eris
 
 from eris.problem import Problem
-from eris.transformations import quaternion_from_matrix, quaternion_matrix
+from eris.transformations import (
+    quaternion_from_matrix,
+    quaternion_matrix,
+    inverse_matrix,
+)
 
 
 class Solver:
     def __init__(self):
         pass
 
-    def solve(self, problem: Problem, x=None):
+    def _solve(self, problem: Problem, x=None):
         """
-        Solve the given problem (starting from a random initial guess if the optional argument is not provided).
+        Solve the given problem (starting from a 'random' initial guess if the optional argument is not provided).
         """
         if x is not None:
             q0, t0 = x
         else:
             q0 = np.array([1.0, 0.0, 0.0, 0.0])
             t0 = np.array([0.0, 0.0, 0.0])
-
-        def inv(A):
-            R = A[:3, :3]
-            t = A[:3, [3]]
-            Ainv = np.eye(4)
-            Ainv[:3, :3] = R.T
-            Ainv[:3, [3]] = -R.T @ t
-            return Ainv
 
         campoints = problem.campoints
         robposes = problem.robposes
@@ -49,12 +45,12 @@ class Solver:
         n = len(robposes)
         for i in range(n):
             for j in range(i + 1, n):
-                Ti = inv(robposes[i])
+                Ti = robposes[i]
                 qi = np.roll(quaternion_from_matrix(Ti), 1)
                 ti = Ti[:3, 3]
                 pis = campoints[i]
 
-                Tj = inv(robposes[j])
+                Tj = robposes[j]
                 qj = np.roll(quaternion_from_matrix(Tj), 1)
                 tj = Tj[:3, 3]
                 pjs = campoints[j]
@@ -69,3 +65,10 @@ class Solver:
         summary = _eris.summary_to_dict(solver.summary())
 
         return Xopt, summary
+
+    def calibrate_eye_in_hand(self, problem, x=None):
+        return self._solve(problem, x)
+
+    def calibrate_eye_to_hand(self, problem, x=None):
+        problem.robposes = [inverse_matrix(robpose) for robpose in problem.robposes]
+        return self._solve(problem, x)

@@ -28,11 +28,16 @@ auto Solver::Solve() -> std::tuple<Eigen::Vector4d, Eigen::Vector3d>
   }
 
   options_.linear_solver_type = ceres::DENSE_QR;
-  options_.num_threads = 12;
+  // options_.num_threads = 12;
 
   ceres::Solve(options_, &problem_, &summary_);
   return std::make_tuple<Eigen::Vector4d, Eigen::Vector3d>(std::move(q_opt_), std::move(t_opt_));
 };
+
+auto Solver::Options() -> ceres::Solver::Options
+{
+  return options_;
+}
 
 auto Solver::Summary() -> ceres::Solver::Summary
 {
