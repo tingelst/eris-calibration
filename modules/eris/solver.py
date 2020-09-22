@@ -16,6 +16,7 @@ import numpy as np
 import _eris
 
 from eris.problem import Problem
+from eris.transformations import quaternion_from_matrix, quaternion_matrix
 
 
 class Solver:
@@ -30,7 +31,41 @@ class Solver:
             q0, t0 = x
         else:
             q0 = np.array([1.0, 0.0, 0.0, 0.0])
-            t0 = np.array([0.0,0.0,0.0])
+            t0 = np.array([0.0, 0.0, 0.0])
+
+        def inv(A):
+            R = A[:3, :3]
+            t = A[:3, [3]]
+            Ainv = np.eye(4)
+            Ainv[:3, :3] = R.T
+            Ainv[:3, [3]] = -R.T @ t
+            return Ainv
+
+        campoints = problem.campoints
+        robposes = problem.robposes
+
         solver = _eris.Solver(q0, t0)
 
-        return True
+        n = len(robposes)
+        for i in range(n):
+            for j in range(i + 1, n):
+                Ti = inv(robposes[i])
+                qi = np.roll(quaternion_from_matrix(Ti), 1)
+                ti = Ti[:3, 3]
+                pis = campoints[i]
+
+                Tj = inv(robposes[j])
+                qj = np.roll(quaternion_from_matrix(Tj), 1)
+                tj = Tj[:3, 3]
+                pjs = campoints[j]
+
+                for pi, pj in zip(pis, pjs):
+                    solver.add_residual_block(qi, ti, pi, qj, tj, pj)
+
+        qopt, topt = solver.solve()
+        Xopt = quaternion_matrix(np.roll(qopt, -1))
+        Xopt[:3, 3] = topt
+
+        summary = _eris.summary_to_dict(solver.summary())
+
+        return Xopt, summary

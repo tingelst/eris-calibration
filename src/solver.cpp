@@ -11,7 +11,6 @@
 
 namespace eris::hand_eye_calibration
 {
-
 auto Solver::AddResidualBlock(const Eigen::Vector4d& qi, const Eigen::Vector3d& ti, const Eigen::Vector3d& pi, const Eigen::Vector4d& qj,
                               const Eigen::Vector3d& tj, const Eigen::Vector3d& pj) -> bool
 {
@@ -34,5 +33,10 @@ auto Solver::Solve() -> std::tuple<Eigen::Vector4d, Eigen::Vector3d>
   ceres::Solve(options_, &problem_, &summary_);
   return std::make_tuple<Eigen::Vector4d, Eigen::Vector3d>(std::move(q_opt_), std::move(t_opt_));
 };
+
+auto Solver::Summary() -> ceres::Solver::Summary
+{
+  return summary_;
+}
 
 }  // namespace eris::hand_eye_calibration

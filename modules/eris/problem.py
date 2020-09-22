@@ -12,5 +12,24 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+
 class Problem:
-    pass
+    def __init__(self, campoints=None, robposes=None):
+        self._campoints = campoints
+        self._robposes = robposes
+
+    @property
+    def campoints(self):
+        return self._campoints
+
+    @campoints.setter
+    def campoints(self, campoints):
+        self._campoints = campoints
+
+    @property
+    def robposes(self):
+        return self._robposes
+
+    @robposes.setter
+    def robposes(self, robposes):
+        self._robposes = robposes

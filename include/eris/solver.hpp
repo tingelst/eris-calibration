@@ -74,7 +74,10 @@ public:
 
   auto AddResidualBlock(const Eigen::Vector4d&, const Eigen::Vector3d&, const Eigen::Vector3d&, const Eigen::Vector4d&, const Eigen::Vector3d&,
                         const Eigen::Vector3d&) -> bool;
+
   auto Solve() -> std::tuple<Eigen::Vector4d, Eigen::Vector3d>;
+
+  auto Summary() -> ceres::Solver::Summary;
 
 private:
   ceres::Problem problem_;
