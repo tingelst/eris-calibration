@@ -11,6 +11,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
 import numpy as np
 
 import _eris
@@ -20,6 +21,8 @@ from eris.transformations import (
     quaternion_from_matrix,
     quaternion_matrix,
     inverse_matrix,
+    random_quaternion,
+    random_vector,
 )
 
 
@@ -34,8 +37,8 @@ class Solver:
         if x is not None:
             q0, t0 = x
         else:
-            q0 = np.array([1.0, 0.0, 0.0, 0.0])
-            t0 = np.array([0.0, 0.0, 0.0])
+            q0 = np.roll(random_quaternion(), 1)
+            t0 = random_vector(3)
 
         campoints = problem.campoints
         robposes = problem.robposes
