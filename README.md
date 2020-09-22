@@ -17,6 +17,8 @@ sudo apt-get install libatlas-base-dev
 sudo apt-get install libeigen3-dev
 # Ninja
 sudo apt-get install ninja-build
+# Pip3
+sudo apt-get install python3-pip
 ```
 
 ### Download and install Ceres
@@ -29,3 +31,9 @@ cmake -GNinja -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTING=OFF -DBUILD_EXAMPLES=OF
 cmake --build .
 cmake --build . --target install 
 ```
+
+### Clone and install
+```
+git clone https://github.com/tingelst/eris-solver.git
+pip3 install eris-solver
+'''
