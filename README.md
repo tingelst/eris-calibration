@@ -34,6 +34,6 @@ cmake --build . --target install
 
 ### Clone and install
 ```bash
-git clone https://github.com/tingelst/eris-solver.git
-pip3 install eris-solver
+git clone https://github.com/tingelst/eris-calibration.git
+pip3 install eris-calibration
 ```

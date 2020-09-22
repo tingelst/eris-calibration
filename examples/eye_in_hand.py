@@ -13,12 +13,10 @@
 # limitations under the License.
 
 import numpy as np
-
 np.set_printoptions(suppress=True)
 from glob import glob
 
 import eris
-
 from eris.transformations import quaternion_matrix, inverse_matrix
 
 
@@ -56,5 +54,4 @@ sol, summary = solver.calibrate_eye_in_hand(problem)
 print(summary["brief_report"])
 print(X)
 print(sol)
-
 print(X @ inverse_matrix(sol))
