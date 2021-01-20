@@ -9,7 +9,7 @@ find_package(Eigen3 3.3 REQUIRED NO_MODULE)
 
 add_subdirectory(third_party/pybind11)
 
-add_library(_eris MODULE src/solver.cpp src/wrapper.cpp)
+add_library(_eris MODULE src/solver.cpp src/laser_2d_solver.cpp src/wrapper.cpp)
 
 target_include_directories(_eris PRIVATE
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
