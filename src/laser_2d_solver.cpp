@@ -20,7 +20,7 @@ auto Solver::AddResidualBlock(const Eigen::Vector4d& quat_i,
   const Eigen::Vector3d& trs_i, 
   const Eigen::Vector3d& point_i) -> bool
 {
-  ceres::CostFunction* cost_function = new ceres::AutoDiffCostFunction<CostFunctor, 4, 4, 3, 3>(
+  ceres::CostFunction* cost_function = new ceres::AutoDiffCostFunction<CostFunctor, 3, 4, 3, 3>(
     new CostFunctor(quat_i, trs_i, point_i));
   problem_.AddResidualBlock(cost_function, NULL, quat_opt_.data(), trs_opt_.data(), plane_opt_.data());
   return true;
