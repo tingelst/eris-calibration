@@ -18,7 +18,7 @@ namespace eris::hand_eye_calibration::laser2d
 {
 auto Solver::AddResidualBlock(const Eigen::Vector4d& quat_i, const Eigen::Vector3d& trs_i, const Eigen::Vector3d& point_i) -> bool
 {
-  ceres::CostFunction* cost_function = new ceres::AutoDiffCostFunction<CostFunctor, 3, 4, 3, 3>(new CostFunctor(quat_i, trs_i, point_i));
+  ceres::CostFunction* cost_function = new ceres::AutoDiffCostFunction<CostFunctor, 3, 4, 3, 4>(new CostFunctor(quat_i, trs_i, point_i));
   problem_.AddResidualBlock(cost_function, NULL, quat_opt_.data(), trs_opt_.data(), plane_opt_.data());
   return true;
 }
@@ -33,7 +33,6 @@ auto Solver::Solve() -> std::tuple<Eigen::Vector4d, Eigen::Vector3d, Eigen::Vect
   }
 
   options_.linear_solver_type = ceres::DENSE_QR;
-  // options_.num_threads = 12;
 
   ceres::Solve(options_, &problem_, &summary_);
   return std::make_tuple<Eigen::Vector4d, Eigen::Vector3d, Eigen::Vector4d>(std::move(quat_opt_), std::move(trs_opt_), std::move(plane_opt_));
