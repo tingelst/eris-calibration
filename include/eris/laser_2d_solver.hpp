@@ -26,8 +26,7 @@ namespace eris::hand_eye_calibration::laser2d
 class CostFunctor
 {
 public:
-  CostFunctor(const Eigen::Vector4d& quat_i, 
-    const Eigen::Vector3d& trs_i, const Eigen::Vector3d& point_i )
+  CostFunctor(const Eigen::Vector4d& quat_i, const Eigen::Vector3d& trs_i, const Eigen::Vector3d& point_i)
     : quat_i_(quat_i), trs_i_(trs_i), point_i_(point_i)
   {
   }
@@ -74,8 +73,8 @@ private:
 class Solver
 {
 public:
-  Solver(const Eigen::Vector4d& quat_init, const Eigen::Vector3d trs_init, const Eigen::Vector4d plane_init) : 
-   quat_opt_(quat_init), trs_opt_(trs_init), plane_opt_(plane_init)
+  Solver(const Eigen::Vector4d& quat_init, const Eigen::Vector3d trs_init, const Eigen::Vector4d plane_init)
+    : quat_opt_(quat_init), trs_opt_(trs_init), plane_opt_(plane_init)
   {
   }
 
