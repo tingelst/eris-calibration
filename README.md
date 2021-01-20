@@ -5,20 +5,7 @@ Hand-eye calibration from point clouds
 
 ### Install dependencies
 ```bash
-# GCC
-sudo apt-get install g++
-# CMake
-sudo apt-get install cmake cmake-curses-gui
-# google-glog + gflags
-sudo apt-get install libgoogle-glog-dev
-# BLAS & LAPACK
-sudo apt-get install libatlas-base-dev
-# Eigen3
-sudo apt-get install libeigen3-dev
-# Ninja
-sudo apt-get install ninja-build
-# Pip3
-sudo apt-get install python3-pip
+sudo apt-get install g++ cmake cmake-curses-gui libgoogle-glog-dev libeigen3-dev ninja-build python3-pip
 ```
 
 ### Download and install Ceres
