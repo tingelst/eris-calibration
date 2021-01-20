@@ -34,3 +34,6 @@
 # CMake
 build
 .DS_Store
+
+# Egg
+*.egg-info
