@@ -49,7 +49,9 @@ auto Solver::Solve() -> std::tuple<Eigen::Vector4d, Eigen::Vector3d, Eigen::Vect
   if (!local_parameterization_is_set_)
   {
     problem_.SetParameterization(quat_opt_.data(), new ceres::QuaternionParameterization());
-    problem_.SetParameterization(plane_opt_.data(), new ceres::AutoDiffLocalParameterization<PlanePlus, 4, 4>);
+    problem_.SetParameterization(plane_opt_.data(), new ceres::ProductParameterization(new ceres::HomogeneousVectorParameterization(3),
+                                                                                       new ceres::IdentityParameterization(1)));
+
     local_parameterization_is_set_ = true;
   }
 

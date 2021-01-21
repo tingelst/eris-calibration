@@ -55,7 +55,8 @@ public:
     T c = plane_x[2];
     T d = plane_x[3];
 
-    T k = (a * pppoint_i(0) + b * pppoint_i(1) + c * pppoint_i(2) - d) / (a * a + b * b + c * c);
+    // T k = (a * pppoint_i(0) + b * pppoint_i(1) + c * pppoint_i(2) - d) / (a * a + b * b + c * c);
+    T k = (a * pppoint_i(0) + b * pppoint_i(1) + c * pppoint_i(2) - d);
 
     residual[0] = k * a;
     residual[1] = k * b;
