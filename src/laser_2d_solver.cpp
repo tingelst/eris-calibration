@@ -16,6 +16,27 @@
 
 namespace eris::hand_eye_calibration::laser2d
 {
+struct PlanePlus
+{
+  template <typename T>
+  bool operator()(const T* x, const T* delta, T* x_plus_delta) const
+  {
+    T n_plus_delta[3];
+    n_plus_delta[0] = x[0] + delta[0];
+    n_plus_delta[1] = x[1] + delta[1];
+    n_plus_delta[2] = x[2] + delta[2];
+
+    const T norm_n_plus_delta = sqrt(n_plus_delta[0] * n_plus_delta[0] + n_plus_delta[1] * n_plus_delta[1] + n_plus_delta[2] * n_plus_delta[2]);
+
+    x_plus_delta[0] = n_plus_delta[0] / norm_n_plus_delta;
+    x_plus_delta[1] = n_plus_delta[1] / norm_n_plus_delta;
+    x_plus_delta[2] = n_plus_delta[2] / norm_n_plus_delta;
+    x_plus_delta[3] = x[3] + delta[3];
+
+    return true;
+  }
+};
+
 auto Solver::AddResidualBlock(const Eigen::Vector4d& quat_i, const Eigen::Vector3d& trs_i, const Eigen::Vector3d& point_i) -> bool
 {
   ceres::CostFunction* cost_function = new ceres::AutoDiffCostFunction<CostFunctor, 3, 4, 3, 4>(new CostFunctor(quat_i, trs_i, point_i));
@@ -28,7 +49,7 @@ auto Solver::Solve() -> std::tuple<Eigen::Vector4d, Eigen::Vector3d, Eigen::Vect
   if (!local_parameterization_is_set_)
   {
     problem_.SetParameterization(quat_opt_.data(), new ceres::QuaternionParameterization());
-
+    problem_.SetParameterization(plane_opt_.data(), new ceres::AutoDiffLocalParameterization<PlanePlus, 4, 4>);
     local_parameterization_is_set_ = true;
   }
 

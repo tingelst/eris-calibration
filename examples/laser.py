@@ -104,6 +104,8 @@ quat_init = np.roll(random_quaternion(), 1)
 trs_init = np.random.rand(3)
 plane_init = random_plane()
 
+print(np.linalg.norm(plane_init[:3]))
+
 solver = _eris.Laser2dSolver(quat_init, trs_init, plane_init)
 
 for A, ps in zip(robposes, laser_points_in_sensor):
@@ -124,13 +126,5 @@ print(summary["brief_report"])
 print(X)
 print(Xopt)
 print(Xopt @ Xinv)
-
-
-def normalized_plane(plane):
-    return plane / np.linalg.norm(plane[:3])
-
-
-print(normalized_plane(planeopt))
-print(normalized_plane(calibration_plane_in_base))
-
-print(np.inner(normalized(planeopt[:3]), normalized(calibration_plane_in_base[:3])))
+print(planeopt)
+print(calibration_plane_in_base)
